@@ -50,10 +50,7 @@
                     @endforelse
                 </tbody>
             </table>
-            <div class="pagination-summary">
-                <p>Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of {{ $products->total() }} products</p>
-                {{ $products->appends(request()->query())->links() }}
-            </div>
+            
         </div>
     </div>
 </main>
