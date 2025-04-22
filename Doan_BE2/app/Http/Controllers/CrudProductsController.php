@@ -10,7 +10,7 @@ use App\Models\Brand;
 class CrudProductsController extends Controller
 {
     /**
-     * Hiển thị danh sách sản phẩm
+     * Hiển thị danh sách sản phẩm Admin
      */
     public function listProduct(Request $request)
     {
@@ -22,8 +22,8 @@ class CrudProductsController extends Controller
 
         $products = $query->paginate(10);
         return view('crud_product.list', compact('products'));
+        
     }
-
     /**
      * Hiển thị form tạo sản phẩm
      */

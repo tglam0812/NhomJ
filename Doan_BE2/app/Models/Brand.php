@@ -18,6 +18,7 @@ class Brand extends Model
         'brand_status'
         
     ];
+    
     /**
      * Một danh mục có nhiều sản phẩm
      */
