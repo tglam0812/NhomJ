@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Cập Nhật Tài Khoản</title>
-    
     <style>
         body {
             background: url('https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
@@ -33,7 +32,7 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             padding: 4rem;
             width: 100%;
-            max-width: 900px;
+            max-width: 650px;
             position: relative;
             z-index: 2;
             animation: slideIn 0.6s ease-out;
@@ -60,15 +59,8 @@
             margin: 0.75rem auto;
             border-radius: 3px;
         }
-        .form-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 3rem;
-            margin-bottom: 2.25rem;
-        }
         .form-group {
-            flex: 1;
-            min-width: 250px;
+            margin-bottom: 2.25rem;
             position: relative;
             animation: fadeInField 0.8s ease-out;
             animation-delay: calc(0.1s * var(--i));
@@ -83,7 +75,7 @@
         }
         .form-group label:hover {
             color: #7c3aed;
-            transform: translateX(5px);
+            transform: transformX(5px);
         }
         .form-group input, .form-group input[type="file"] {
             width: 100%;
@@ -259,11 +251,7 @@
             from { opacity: 0; transform: translateX(-20px); }
             to { opacity: 1; transform: translateX(0); }
         }
-        @media (max-width: 768px) {
-            .form-row {
-                flex-direction: column;
-                gap: 1rem;
-            }
+        @media (max-width: 640px) {
             .form-container {
                 padding: 2.5rem;
                 margin: 1.5rem;
@@ -279,120 +267,65 @@
                 max-width: none;
             }
         }
-        .alert-box {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            color: white;
-            font-weight: bold;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            z-index: 9999;
-            opacity: 1;
-            transition: opacity 0.5s ease;
-        }
-
-        .alert-box.success {
-            background-color: #10b981; /* xanh lá */
-        }
-
-        .alert-box.error {
-            background-color: #ef4444; /* đỏ */
-        }
-        .home-button {
-            position: absolute;
-            top: 40px;
-            left: 40px;
-            background: linear-gradient(90deg, #7c3aed, #a855f7);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1rem;
-            text-decoration: none;
-            box-shadow: 0 6px 18px rgba(124, 58, 237, 0.4);
-            transition: background 0.3s ease, transform 0.2s ease;
-            z-index: 1000;
-        }
-        .home-button:hover {
-            background: linear-gradient(90deg, #6d28d9, #9333ea);
-            transform: translateY(-3px);
-        }
-        .flash {
-    animation: flashInput 0.6s ease-in-out;
-}
-@keyframes flashInput {
-    0% { background-color: #e0f7f4; }
-    100% { background-color: #f9fafb; }
-}
-
-.bounce {
-    animation: bounceAvatar 0.6s ease;
-}
-@keyframes bounceAvatar {
-    0%   { transform: scale(1); }
-    30%  { transform: scale(1.15); }
-    60%  { transform: scale(0.95); }
-    100% { transform: scale(1); }
-}
-
     </style>
 </head>
-<body> 
-<form action="{{ route('info.update', $user->user_id) }}" method="post" role="form text-left" enctype="multipart/form-data">
-    <a href="{{ route('home') }}" class="home-button">🏠 To back Home</a>   
+<body>
     <div class="form-container">
         <div class="profile-pic">
-            <img id="uploadImg" src="{{ asset('assets/images/avt/'. $user->avatar) }}" alt="">
+            <img id="avatar-preview" src="https://i.pravatar.cc/100" alt="Ảnh đại diện">
             <label for="avatar">📷</label>
-            <!-- <input type="file" id="avatar" accept="image/*"> -->
-            <input class="form-control" type="file" placeholder="Choose File" id="avatar" name="avatar" value="{{ $user->avatar }}" onchange="previewImg()">
+            <input type="file" id="avatar" accept="image/*">
         </div>
         <h2 class="form-title">Thông Tin Tài Khoản</h2>
         <div class="success-message" id="success-message">
             Cập nhật thông tin thành công!
         </div>
-            @csrf
-            @method('patch')
-            @if($errors->any())
-            @endif
-            <div class="form-row">
-                <div class="form-group" style="--i: 1">
-                    <label for="fullName">Họ và Tên</label>
-                    <input type="text" id="fullName" value="{{ $user->full_name }}" name="full_name">
-                    <span class="icon">👤</span>
-                    <span class="tooltip" style="top: 100%; left: 0;">Tên đầy đủ của bạn</span>
-                    <span class="error-text" id="fullName-error">Họ và tên không được để trống</span>
-                </div>
-                <div class="form-group" style="--i: 2">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" value="{{ $user->email }}" disabled>
-                    <span class="icon">✉️</span>
-                    <span class="tooltip" style="top: 100%; left: 0;">Địa chỉ email liên hệ</span>
-                    <span class="error-text" id="email-error">Email không hợp lệ</span>
-                </div>
+        <form id="account-form">
+            <div class="form-group" style="--i: 1">
+                <label for="fullName">Họ và Tên</label>
+                <input type="text" id="fullName" name="fullName" value="Nguyễn Văn A">
+                <span class="tooltip" style="top: 100%; left: 0;">Tên đầy đủ của bạn</span>
+                <span class="error-text" id="fullName-error">Họ và tên không được để trống</span>
             </div>
-            <div class="form-row">
-                <div class="form-group" style="--i: 3">
-                    <label for="phone">Số Điện Thoại</label>
-                    <input class="form-control" type="tel" value="{{ $user->phone }}" placeholder="" id="number" name="phone">
-                    <span class="icon">📞</span>
-                    <span class="tooltip" style="top: 100%; left: 0;">Số điện thoại liên lạc</span>
-                    <span class="error-text" id="phone-error">Số điện thoại phải là 10 chữ số</span>
-                </div>
-                <div class="form-group" style="--i: 4">
-                    <label for="dateOfBirth">Ngày Sinh</label>
-                    <input class="form-control" type="tel" value="{{ $user->date }}" placeholder="+84" id="number" name="date">
-                    <span class="icon">🎂</span>
-                    <span class="tooltip" style="top: 100%; left: 0;">Ngày tháng năm sinh</span>
-                    <span class="error-text" id="dateOfBirth-error">Ngày sinh không được để trống</span>
-                </div>
+            <div class="form-group" style="--i: 2">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="nguyenvana@example.com">
+                <span class="tooltip" style="top: 100%; left: 0;">Địa chỉ email liên hệ</span>
+                <span class="error-text" id="email-error">Email không hợp lệ</span>
+            </div>
+            <div class="form-group" style="--i: 2">
+                <label for="gender">Giới tính</label>
+                <input type="gender" id="gednder" name="gender" value="nam">
+                <span class="tooltip" style="top: 100%; left: 0;">Nhập giới tính</span>
+                <span class="error-text" id="email-error">giới tính không hợp lệ</span>
+            </div>
+            <div class="form-group" style="--i: 3">
+                <label for="phone">Số Điện Thoại</label>
+                <input type="tel" id="phone" name="phone" value="0123456789">
+                <span class="tooltip" style="top: 100%; left: 0;">Số điện thoại liên lạc</span>
+                <span class="error-text" id="phone-error">Số điện thoại phải là 10 chữ số</span>
+            </div>
+            <div class="form-group" style="--i: 4">
+                <label for="dateOfBirth">Ngày Sinh</label>
+                <input type="date" id="dateOfBirth" name="dateOfBirth" value="1990-01-01">
+                <span class="tooltip" style="top: 100%; left: 0;">Ngày tháng năm sinh</span>
+                <span class="error-text" id="dateOfBirth-error">Ngày sinh không được để trống</span>
+            </div>
+            <div class="form-group" style="--i: 5">
+                <label for="password">Mật Khẩu</label>
+                <input type="password" id="password" name="password">
+                <span class="tooltip" style="top: 100%; left: 0;">Mật khẩu mới (ít nhất 6 ký tự)</span>
+                <span class="error-text" id="password-error">Mật khẩu phải có ít nhất 6 ký tự</span>
+            </div>
+            <div class="form-group" style="--i: 6">
+                <label for="confirmPassword">Xác Nhận Mật Khẩu</label>
+                <input type="password" id="confirmPassword" name="confirmPassword">
+                <span class="tooltip" style="top: 100%; left: 0;">Nhập lại mật khẩu để xác nhận</span>
+                <span class="error-text" id="confirmPassword-error">Mật khẩu xác nhận không khớp</span>
             </div>
             <div class="form-group" style="--i: 7">
                 <label for="address">Địa Chỉ</label>
-                <input type="text" id="address" name="address" value="{{ $user->address }}">
-                <span class="icon">🏠</span>
+                <input type="text" id="address" name="address" value="123 Đường Láng, Hà Nội" disabled>
                 <span class="tooltip" style="top: 100%; left: 0;">Địa chỉ hiện tại của bạn</span>
             </div>
             <div class="action-buttons">
@@ -400,65 +333,99 @@
                 <button type="button" class="btn btn-secondary" onclick="resetForm()">Đặt Lại</button>
             </div>
         </form>
-        @if(session('success'))
-            <div id="alert-box" class="alert-box success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div id="alert-box" class="alert-box error">
-                {{ session('error') }}
-            </div>
-        @endif
-
     </div>
     <script>
-        function previewImg() {
-            var imgPreview = document.getElementById('uploadImg');
-            imgPreview.src = window.URL.createObjectURL(event.target.files[0]);
-            console.log(event)
-        }
-        setTimeout(() => {
-            const alertBox = document.getElementById('alert-box');
-            if (alertBox) {
-                alertBox.style.opacity = '0';
-                setTimeout(() => alertBox.remove(), 500); // đợi hiệu ứng mờ xong rồi xóa
+        const form = document.getElementById('account-form');
+        const avatarInput = document.getElementById('avatar');
+        const avatarPreview = document.getElementById('avatar-preview');
+        const successMessage = document.getElementById('success-message');
+
+        // Handle avatar upload
+        avatarInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    avatarPreview.src = reader.result;
+                    successMessage.classList.remove('show');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert('Vui lòng chọn một file hình ảnh hợp lệ.');
+                avatarInput.value = '';
             }
-        }, 2000); // 2 giây
+        });
 
+        // Form validation and submission
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let isValid = true;
+
+            // Reset error messages
+            document.querySelectorAll('.error-text').forEach(error => error.classList.remove('show'));
+            successMessage.classList.remove('show');
+
+            // Validate fullName
+            const fullName = document.getElementById('fullName').value;
+            if (!fullName.trim()) {
+                document.getElementById('fullName-error').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate email
+            const email = document.getElementById('email').value;
+            if (!email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+                document.getElementById('email-error').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate phone
+            const phone = document.getElementById('phone').value;
+            if (!phone.match(/^\d{10}$/)) {
+                document.getElementById('phone-error').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate dateOfBirth
+            const dateOfBirth = document.getElementById('dateOfBirth').value;
+            if (!dateOfBirth) {
+                document.getElementById('dateOfBirth-error').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate password
+            const password = document.getElementById('password').value;
+            if (password && password.length < 6) {
+                document.getElementById('password-error').classList.add('show');
+                isValid = false;
+            }
+
+            // Validate confirmPassword
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            if (password && password !== confirmPassword) {
+                document.getElementById('confirmPassword-error').classList.add('show');
+                isValid = false;
+            }
+
+            if (isValid) {
+                // Simulate saving data
+                setTimeout(() => {
+                    successMessage.classList.add('show');
+                }, 500);
+            }
+        });
+
+        // Reset form
         function resetForm() {
-            const form = document.querySelector('form');
             form.reset();
-
-            // Reset ảnh đại diện về mặc định
-            const imgPreview = document.getElementById('uploadImg');
-            imgPreview.src = "{{ asset('assets/images/avt/' . $user->avatar) }}";
-
-            // Thêm hiệu ứng "bounce" cho ảnh
-            imgPreview.classList.add('bounce');
-            setTimeout(() => imgPreview.classList.remove('bounce'), 800);
-
-            // Hiệu ứng input sáng nhẹ
-            const inputs = form.querySelectorAll('input');
-            inputs.forEach(input => {
-                input.classList.add('flash');
-                setTimeout(() => input.classList.remove('flash'), 600);
-            });
-
-            // Ẩn lỗi nếu có
-            document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
-
-            // Thêm thông báo "Đã đặt lại"
-            const resetAlert = document.createElement('div');
-            resetAlert.className = 'alert-box success';
-            resetAlert.textContent = 'Đã đặt lại thông tin!';
-            document.body.appendChild(resetAlert);
-
-            setTimeout(() => {
-                resetAlert.style.opacity = '0';
-                setTimeout(() => resetAlert.remove(), 500);
-            }, 2000);
+            document.getElementById('fullName').value = 'Nguyễn Văn A';
+            document.getElementById('email').value = 'nguyenvana@example.com';
+            document.getElementById('phone').value = '0123456789';
+            document.getElementById('dateOfBirth').value = '1990-01-01';
+            document.getElementById('address').value = '123 Đường Láng, Hà Nội';
+            avatarPreview.src = 'https://i.pravatar.cc/100';
+            document.querySelectorAll('.error-text').forEach(error => error.classList.remove('show'));
+            successMessage.classList.remove('show');
         }
     </script>
 </body>

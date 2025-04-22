@@ -60,7 +60,8 @@ class InformationController extends Controller
         $user = User::findOrFail($id);
         $this->validate($request,[
             'full_name' => 'required|max:120',
-            'phone'     => 'required|regex:/(0)[0-9]/|not_regex:/[a-z]/|min:9'
+            'phone'     => ['required', 'regex:/^\+84[0-9]{9}$/', 'not_regex:/[a-z]/'
+    ]
         ]);
         $user->full_name = $request->full_name;
         $user->phone    = $request->phone;
