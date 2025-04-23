@@ -31,7 +31,7 @@ class CrudProductsController extends Controller
     {
         $categories = Category::all();
         $brands = Brand::all();
-        return view('crud_product.create', compact('categories'));
+        return view('crud_product.create', compact('categories','brands'));
     }
 
     /**
