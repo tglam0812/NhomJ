@@ -15,7 +15,6 @@ class Category extends Model
         'category_name',
         'category_description',
         'category_status'
-        
     ];
     /**
      * Một danh mục có nhiều sản phẩm
