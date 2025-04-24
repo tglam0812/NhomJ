@@ -6,7 +6,6 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CrudProductsController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\CrudCategoryController;
 
 // Route::get('login', [LoginController::class, 'login'])->name('login');
 
@@ -31,16 +30,7 @@ Route::prefix('products')->group(function () {
     Route::get('/{id}', [CrudProductsController::class, 'readProduct'])->name('products.readProduct');
     Route::delete('/{id}', [CrudProductsController::class, 'deleteProduct'])->name('products.deleteProduct');
 });
-// Category
-Route::prefix('categories')->group(function () {
-    Route::get('/', [CrudCategoryController::class, 'listCategory'])->name('categories.list'); // Danh sách danh mục
-    Route::get('/create', [CrudCategoryController::class, 'createCategory'])->name('categories.createCategory'); // Tạo danh mục
-    Route::post('/create', [CrudCategoryController::class, 'postCategory'])->name('categories.store'); // Xử lý tạo danh mục
-    Route::get('/{category_id}/edit', [CrudCategoryController::class, 'updateCategory'])->name('categories.updateCategory'); // Cập nhật danh mục
-    Route::put('/{category_id}/update', [CrudCategoryController::class, 'postUpdateCategory'])->name('categories.update'); // Xử lý cập nhật danh mục
-    Route::get('/{category_id}', [CrudCategoryController::class, 'readCategory'])->name('categories.readCategory'); // Xem chi tiết danh mục
-    Route::delete('/{category_id}', [CrudCategoryController::class, 'deleteCategory'])->name('categories.deleteCategory'); // Xóa danh mục
-});
+
 // Logout
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
@@ -52,4 +42,3 @@ Route::group(['prefix' => 'auth', 'middleware' => ['auth']], function() {
     Route::get('/resetpassword', [InformationController::class, 'showresetpassword'])->name('auth.showresetpassword');
     Route::patch('/resetpassword/{user_id}', [InformationController::class, 'resetpassword'])->name('info.resetpassword');
 });
-
